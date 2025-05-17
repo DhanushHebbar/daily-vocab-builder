@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentence Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>✍️ Sentence Feedback</h1>
+    <p>Use the word of the day in a sentence: <strong>{{ word }}</strong></p>
+
+    <form id="feedback-form" method="POST">
+        <textarea name="sentence" rows="4" cols="50" placeholder="Write your sentence here..." required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if feedback %}
+        <p><strong>Feedback:</strong> {{ feedback }}</p>
+    {% endif %}
+
+    <a href="{{ url_for('sentence_feedback') }}" class="btn btn-primary">Create Another Sentence</a>
+
+
+    <a href="{{ url_for('index') }}">🔙 Back to Home</a>
+</body>
+</html>

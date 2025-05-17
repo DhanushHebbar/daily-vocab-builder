@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Vocabulary Goals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>🎯 Set Your Vocabulary Goals</h1>
+
+    <form method="POST">
+        <label for="daily_goal">Daily Goal:</label>
+        <input type="number" name="daily_goal" value="{{ user_data.daily_goal or 1 }}" min="1" required><br><br>
+
+        <label for="weekly_goal">Weekly Goal:</label>
+        <input type="number" name="weekly_goal" value="{{ user_data.weekly_goal or 7 }}" min="1" required><br><br>
+
+        <button type="submit">Save Goals</button>
+    </form>
+
+    {% if feedback %}
+        <p><strong>{{ feedback }}</strong></p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">🔙 Back to Home</a>
+</body>
+</html>

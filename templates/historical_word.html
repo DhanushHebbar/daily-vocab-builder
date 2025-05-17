@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Historical Word of the Day</title>
+</head>
+<body>
+    <h1>📜 Historical Word of the Day</h1>
+
+    <form method="POST">
+        <label for="era">Select Era:</label>
+        <select name="era" id="era" required>
+            <option value="">--Select an Era--</option>
+            <option value="1990s">1990s</option>
+            <option value="2000s">2000s</option>
+            <option value="2010s">2010s</option>
+        </select>
+        <button type="submit">Get Word</button>
+    </form>
+
+    {% if word %}
+        <div style="margin-top: 20px;">
+            <p><strong>Word from selected era:</strong> {{ word }}</p>
+        </div>
+    {% elif request.method == 'POST' %}
+        <div style="margin-top: 20px;">
+            <p><strong>❌ No word found for the selected era.</strong></p>
+        </div>
+    {% endif %}
+
+    <br><a href="{{ url_for('index') }}">🔙 Back to Dashboard</a>
+</body>
+</html>

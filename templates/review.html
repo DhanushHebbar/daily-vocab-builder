@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Words Due for Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Review Words</h1>
+
+        {% if due_words %}
+            <ul class="word-list">
+                {% for word in due_words %}
+                <li>
+                    <form method="POST" action="{{ url_for('mark_reviewed') }}">
+                        <input type="hidden" name="word" value="{{ word }}">
+                        {{ word }}
+                        <button type="submit">✅ Mark as Reviewed</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No words to review today. Keep learning!</p>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}">← Back to Home</a>
+    </div>
+</body>
+</html>

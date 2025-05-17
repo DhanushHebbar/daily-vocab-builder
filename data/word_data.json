@@ -1,0 +1,62 @@
+[
+  {
+    "word": "tenacious",
+    "part_of_speech": "adjective",
+    "meaning": "persistent, determined",
+    "usage": "Her tenacious attitude helped her achieve her goals.",
+    "etymology": "From Latin 'tenax' meaning 'holding fast'",
+    "root_info": "N/A",
+    "synonyms": ["persistent", "determined","stubborn","resolute","insistent","steadfast","determined."],
+    "antonyms": ["lazy", "irresolute"],
+    "quote": "Success is no accident — it's tenacity and effort."
+  },
+  {
+    "word": "resilient",
+    "part_of_speech": "adjective",
+    "meaning": "able to recover quickly from difficulties",
+    "usage": "Children are often more resilient than adults.",
+    "synonyms": ["strong", "tough", "flexible"],
+    "antonyms": ["fragile", "vulnerable"],
+    "quote": "Resilience is knowing that you are the only one that has the power to pick yourself up."
+  },
+  {
+    "word": "eloquent",
+    "part_of_speech": "adjective",
+    "meaning": "fluent or persuasive in speaking or writing",
+    "usage": "Her speech was eloquent and moved the entire audience.",
+    "synonyms": ["articulate", "expressive", "persuasive"],
+    "antonyms": ["inarticulate", "mute"],
+    "quote": "Eloquence is the power to translate a truth into language perfectly intelligible to the person to whom you speak."
+  },
+  {
+    "word": "meticulous",
+    "part_of_speech": "adjective",
+    "meaning": "showing great attention to detail; very careful and precise",
+    "usage": "The artist was meticulous in painting every feather on the bird.",
+    "synonyms": ["precise", "thorough", "diligent"],
+    "antonyms": ["careless", "negligent"],
+    "quote": "Success is the sum of details, and being meticulous is the key."
+  },
+  {
+    "word": "serene",
+    "part_of_speech": "adjective",
+    "meaning": "calm, peaceful, and untroubled",
+    "usage": "She looked out at the serene landscape and felt at peace.",
+    "synonyms": ["tranquil", "calm", "peaceful"],
+    "antonyms": ["agitated", "chaotic"],
+    "quote": "In the midst of movement and chaos, keep stillness inside of you."
+  },
+  {
+    "word": "innovative",
+    "part_of_speech": "adjective",
+    "meaning": "featuring new methods or original ideas",
+    "usage": "The company is known for its innovative approach to problem-solving.",
+    "synonyms": ["creative", "original", "cutting-edge"],
+    "antonyms": ["traditional", "conventional"],
+    "quote": "Innovation distinguishes between a leader and a follower. – Steve Jobs"
+  }
+
+
+
+
+]

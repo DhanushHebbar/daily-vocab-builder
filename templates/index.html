@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Vocabulary Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #222;
+            --card-bg: #ffffff;
+            --accent: #4CAF50;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #181818;
+            --text-color: #e0e0e0;
+            --card-bg: #252525;
+            --accent: #90caf9;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: url('{{ url_for("static", filename="bg-pattern.png") }}');
+            background-size: cover;
+            margin: 0;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            font-size: 2.2em;
+        }
+
+        .logo {
+            width: 45px;
+            vertical-align: middle;
+        }
+
+        .theme-toggle {
+            float: right;
+            font-size: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+        }
+
+        .dashboard, .word-section, .motivation {
+            background: var(--bg-color);
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+        }
+
+        .word-section p, .dashboard p {
+            margin: 8px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .feedback.success { color: lightgreen; }
+        .feedback.error { color: tomato; }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-adjust"></i> Toggle Theme
+    </button>
+
+    <div class="container">
+        <h1>
+            <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="Logo">
+            📚 Daily Vocabulary Builder
+        </h1>
+
+        {% if progress is mapping %}
+        <div class="dashboard">
+            <h2>📊 Progress Dashboard</h2>
+            <p>🔥 Streak: {{ progress.streak }} days</p>
+            <p>📆 Last Active: {{ progress.last_active }}</p>
+            <p>🎯 Daily Goal: {{ progress.daily_goal }} | Words Learned Today: {{ progress.words_learned_today_count }}</p>
+            <p>🎯 Weekly Goal: {{ progress.weekly_goal }}</p>
+            <p>📚 Words Under Review: {{ progress.words_under_review_count }}</p>
+        </div>
+        {% endif %}
+
+        <div class="word-section">
+            <h2>📖 Word of the Day: {{ word.word }}</h2>
+            <p><strong>Part of Speech:</strong> {{ word.part_of_speech }}</p>
+            <p><strong>Meaning:</strong> {{ word.meaning }}</p>
+            <p><strong>Usage:</strong> {{ word.usage or "No usage available." }}</p>
+            <p><strong>Synonyms:</strong> {{ word.synonyms | join(', ') if word.synonyms else "None" }}</p>
+            <p><strong>Antonyms:</strong> {{ word.antonyms | join(', ') if word.antonyms else "None" }}</p>
+            <p><strong>Quote:</strong> {{ word.quote }}</p>
+        </div>
+
+        <div class="motivation">
+            <strong>💡 Motivation:</strong> {{ motivation or "Keep pushing forward! Every word counts!" }}
+        </div>
+
+         <form id="sentence-form">
+      <label for="sentence"><strong>Create a sentence using "{{ word.word }}":</strong></label>
+      <input type="text" id="sentence" name="sentence" required />
+      <button type="submit">Submit Sentence</button>
+    </form>
+
+    <p id="feedback" class="feedback"></p>
+    <button id="more-btn" class="more-sentences-btn" onclick="resetForm()">Create more sentences </button>
+
+
+        <!--<form method="POST" action="{{ url_for('index') }}">
+            <label for="sentence"><strong>Create a sentence using "{{ word.word }}":</strong></label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit Sentence</button>
+        </form>
+
+        {% if sentence_feedback %}
+            <p class="feedback {% if '✅' in sentence_feedback %}success{% else %}error{% endif %}">
+                {{ sentence_feedback }}
+            </p>
+        {% endif %}!-->
+
+        <div class="footer-links">
+            <a href="{{ url_for('review') }}">🔁 Review</a>
+            <a href="{{ url_for('set_goals') }}">🎯 Goals</a>
+            <a href="{{ url_for('games') }}">🎮 Games</a>
+            <a href="{{ url_for('historical_word') }}">🕰️ Historical Words</a>
+            <a href="{{ url_for('export_csv') }}">⬇️ Export CSV</a>
+            <a href="{{ url_for('export_pdf') }}">⬇️ Export PDF</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        window.onload = function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+    </script>
+
+    <!-- Theme + AJAX -->
+  <script>
+    function toggleTheme() {
+      const newTheme = document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    }
+
+    window.onload = function () {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.body.setAttribute("data-theme", savedTheme);
+    };
+
+    const sentenceInput = document.getElementById("sentence");
+    const form = document.getElementById("sentence-form");
+    const feedback = document.getElementById("feedback");
+    const moreBtn = document.getElementById("more-btn");
+
+    sentenceInput.addEventListener("input", () => {
+      if (sentenceInput.value.trim() !== "") {
+        moreBtn.style.display = "inline-block";
+      }
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const sentence = sentenceInput.value;
+
+      fetch("/submit_sentence", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sentence: sentence })
+      })
+      .then(response => response.json())
+      .then(data => {
+        feedback.textContent = data.feedback;
+        feedback.className = "feedback " + (data.feedback.includes("✅") ? "success" : "error");
+      })
+      .catch(() => {
+        feedback.textContent = "Something went wrong.";
+        feedback.className = "feedback error";
+      });
+    });
+
+    moreBtn.addEventListener("click", () => {
+      window.location.href = "/sentence_feedback";
+    });
+  </script>
+
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Vocabulary Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>📚 Daily Vocabulary Builder</h1>
+
+    <div class="dashboard">
+  <h2>📊 Progress Dashboard</h2>
+  <p>🔥 Streak: {{ progress.streak }} days</p>
+  <p>📆 Last Active: {{ progress.last_active }}</p>
+  <p>🎯 Daily Goal: {{ progress.daily_goal }} | Words Learned Today: {{ progress.words_learned_today_count }}</p>
+  <p>🎯 Weekly Goal: {{ progress.weekly_goal }}</p>
+  <p>📚 Words Under Review: {{ progress.words_under_review_count }}</p>
+</div>
+
+
+    <div class="word-section">
+        <h2>📖 Word of the Day: {{ word.word }}</h2>
+        <p><strong>Part of Speech:</strong> {{ word.part_of_speech }}</p>
+        <p><strong>Meaning:</strong> {{ word.meaning }}</p>
+        <p><strong>Usage:</strong> {{ word.usage or "No usage available." }}</p>
+        <p><strong>Synonyms:</strong> {{ word.synonyms | join(', ') }}</p>
+        <p><strong>Antonyms:</strong> {{ word.antonyms | join(', ') }}</p>
+        <p><strong>Quote:</strong> {{ word.quote }}</p>
+    </div>
+
+    <p><strong>🌟 Motivation:</strong> {{ motivation }}</p>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <a href="{{ url_for('review') }}">📖 Review Due Words</a> <br> 
+
+
+    <a href="{{ url_for('sentence_feedback') }}">📝 Try Sentence Feedback</a> <br>
+
+    <a href="{{ url_for('set_goals') }}">🎯 Set Your Goals</a> <br>
+
+    <hr>
+    <a href="{{ url_for('historical_word') }}" class="button">Historical Word </a>
+<hr>
+<h2>🎮 Play Word Games</h2>
+<p>Sharpen your vocabulary by playing fun word games!</p>
+<a href="{{ url_for('games') }}" class="button">🧠 Try a Game</a> <br>
+
+
+
+
+<h3>📤 Export Progress</h3>
+<a href="{{ url_for('export_csv') }}">📝 Download CSV</a> |
+<a href="{{ url_for('export_pdf') }}">📄 Download PDF</a>
+
+
+
+</body>
+</html>
