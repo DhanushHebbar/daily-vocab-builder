@@ -13,7 +13,6 @@ Werkzeug==3.0.1
 
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
-chart.js (via CDN in HTML)
 Flask-Login==0.6.3
 flask_sqlalchemy
 
