@@ -11,9 +11,12 @@ from utils.word_manager import (
     USER_DATA_PATH
 )
 from utils.dashboard import get_dashboard
-from utils.progress import get_progress_summary
+from utils.progress import get_progress_summary,save_sentence_history
 from utils.export import export_progress_csv, export_progress_pdf
 from utils.motivation import get_daily_motivation
+
+
+
 
 app = Flask(__name__)
 
@@ -195,22 +198,24 @@ def server_error(e):
     return render_template("error.html", error="500 - Internal Server Error"), 500
 
 
-@app.route('/submit_sentence', methods=['POST'])
+# --------------------------- AJAX Sentence Submission --------------------------- #
+@app.route('/submit_sentence', methods=["POST"])
 def submit_sentence():
     data = request.get_json()
-    sentence = data.get('sentence', '')
-    word = get_word_of_the_day()['word']
+    sentence = data.get("sentence", "")
+    word = get_word_of_the_day()
+    save_sentence_history(word["word"], sentence)
 
-    if word.lower() in sentence.lower():
-        feedback = f"✅ Good job! You used '{word}' correctly in a sentence."
+    if word["word"].lower() in sentence.lower():
+        feedback = f"✅ Great! You used the word '{word['word']}' correctly."
     else:
-        feedback = f"❌ Oops! Your sentence must include the word '{word}'."
+        feedback = f"❌ Try again. Your sentence must include the word '{word['word']}'."
 
     return jsonify({'feedback': feedback})
 
 
-# ------------------------------------------
+
+
 # Main Entry
-# ------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

@@ -81,3 +81,26 @@ def get_progress_summary():
         "words_learned_today_count": len(data.get("words_learned_today", [])),
         "words_under_review_count": len(data.get("words_under_review", []))
     }
+
+def save_sentence_history(word, sentence):
+    path = "data/sentence_history.json"
+    if not os.path.exists(path):
+        history = {}
+    else:
+        with open(path, "r", encoding="utf-8") as f:
+            history = json.load(f)
+
+    from datetime import datetime
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    if today not in history:
+        history[today] = []
+
+    history[today].append({
+        "word": word,
+        "sentence": sentence
+    })
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(history, f, indent=2)
+
