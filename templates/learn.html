@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Learn - Daily Vocabulary Builder{% endblock %}
+
+{% block content %}
+<h2>Learn New Words</h2>
+
+{% for word in words %}
+    <div class="word-card">
+        <h3>{{ word.word }}</h3>
+        <p><strong>Meaning:</strong> {{ word.meaning }}</p>
+        <p><strong>Usage:</strong> {{ word.usage }}</p>
+        <p><strong>Synonyms:</strong> {{ word.synonyms | join(', ') }}</p>
+        <p><strong>Antonyms:</strong> {{ word.antonyms | join(', ') }}</p>
+    </div>
+{% else %}
+    <p>No new words to learn today. Check back later!</p>
+{% endfor %}
+
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+{% endblock %}

@@ -1,180 +1,64 @@
+index.html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Vocabulary Builder</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <style>
-        :root {
-            --bg-color: #f0f2f5;
-            --text-color: #222;
-            --card-bg: #ffffff;
-            --accent: #4CAF50;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #181818;
-            --text-color: #e0e0e0;
-            --card-bg: #252525;
-            --accent: #90caf9;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            background-image: url('{{ url_for("static", filename="bg-pattern.png") }}');
-            background-size: cover;
-            margin: 0;
-            padding: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--accent);
-            font-size: 2.2em;
-        }
-
-        .logo {
-            width: 45px;
-            vertical-align: middle;
-        }
-
-        .theme-toggle {
-            float: right;
-            font-size: 16px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: var(--text-color);
-        }
-
-        .dashboard, .word-section, .motivation {
-            background: var(--bg-color);
-            border-left: 5px solid var(--accent);
-            padding: 20px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-        }
-
-        .word-section p, .dashboard p {
-            margin: 8px 0;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            padding: 10px 20px;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .feedback.success { color: lightgreen; }
-        .feedback.error { color: tomato; }
-
-        .footer-links {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .footer-links a {
-            margin: 0 10px;
-            text-decoration: none;
-            color: var(--accent);
-        }
-
-.tts-panel {
-  margin-top: 20px;
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  padding: 12px;
-  background-color: var(--card-bg);
-  cursor: pointer;
-}
-
-.tts-panel summary {
-  font-size: 16px;
-  cursor: pointer;
-  color: var(--accent);
-}
-
-.tts-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-  padding: 10px 0;
-}
-
-.tts-buttons button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: transform 0.25s ease, background-color 0.25s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.tts-buttons button:hover {
-  background-color: #0056b3;
-  transform: scale(1.1);
-}
-
-.tts-btn {
-  margin: 4px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.tts-btn:hover {
-  transform: scale(1.1);
-  background-color: #45a049;
-}
-
-
-
-   </style>
+   
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <button class="theme-toggle" onclick="toggleTheme()">
         <i class="fas fa-adjust"></i> Toggle Theme
     </button>
 
+
+
+        <div class="register-link">
+            Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+        </div>
+
+
+        <div style="text-align: right;">
+    Logged in as {{ username }} |
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+   
+
     <div class="container">
-        <h1>
+        
             <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="Logo">
-            📚 Daily Vocabulary Builder
-        </h1>
+            <header>
+            <h1>📚 Daily Vocabulary Builder </h1> 
+          </header>
+
+           {% if current_user.is_authenticated %}
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a> |
+                <a href="{{ url_for('learn') }}">Learn</a> |
+                <a href="{{ url_for('review') }}">Review</a> |
+                <a href="{{ url_for('test') }}">Test</a> |
+                <a href="{{ url_for('games') }}">Games</a> |
+                <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        {% else %}
+            <nav>
+                <a href="{{ url_for('login') }}">Login</a> |
+                <a href="{{ url_for('register') }}">Register</a>
+            </nav>
+        {% endif %}
+
+
+        
+    <main>
 
         {% if progress is mapping %}
         <div class="dashboard">
@@ -373,66 +257,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 </script>
-
-</body>
-</html>
-
-
-<!--<!DOCTYPE html>
-<html>
-<head>
-    <title>Daily Vocabulary Builder</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>📚 Daily Vocabulary Builder</h1>
-
-    <div class="dashboard">
-  <h2>📊 Progress Dashboard</h2>
-  <p>🔥 Streak: {{ progress.streak }} days</p>
-  <p>📆 Last Active: {{ progress.last_active }}</p>
-  <p>🎯 Daily Goal: {{ progress.daily_goal }} | Words Learned Today: {{ progress.words_learned_today_count }}</p>
-  <p>🎯 Weekly Goal: {{ progress.weekly_goal }}</p>
-  <p>📚 Words Under Review: {{ progress.words_under_review_count }}</p>
-</div>
-
-
-    <div class="word-section">
-        <h2>📖 Word of the Day: {{ word.word }}</h2>
-        <p><strong>Part of Speech:</strong> {{ word.part_of_speech }}</p>
-        <p><strong>Meaning:</strong> {{ word.meaning }}</p>
-        <p><strong>Usage:</strong> {{ word.usage or "No usage available." }}</p>
-        <p><strong>Synonyms:</strong> {{ word.synonyms | join(', ') }}</p>
-        <p><strong>Antonyms:</strong> {{ word.antonyms | join(', ') }}</p>
-        <p><strong>Quote:</strong> {{ word.quote }}</p>
-    </div>
-
-    <p><strong>🌟 Motivation:</strong> {{ motivation }}</p>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-    <a href="{{ url_for('review') }}">📖 Review Due Words</a> <br> 
-
-
-    <a href="{{ url_for('sentence_feedback') }}">📝 Try Sentence Feedback</a> <br>
-
-    <a href="{{ url_for('set_goals') }}">🎯 Set Your Goals</a> <br>
-
-    <hr>
-    <a href="{{ url_for('historical_word') }}" class="button">Historical Word </a>
-<hr>
-<h2>🎮 Play Word Games</h2>
-<p>Sharpen your vocabulary by playing fun word games!</p>
-<a href="{{ url_for('games') }}" class="button">🧠 Try a Game</a> <br>
-
-
-
-
-<h3>📤 Export Progress</h3>
-<a href="{{ url_for('export_csv') }}">📝 Download CSV</a> |
-<a href="{{ url_for('export_pdf') }}">📄 Download PDF</a>
-
-
 
 </body>
 </html>

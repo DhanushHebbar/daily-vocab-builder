@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vocabulary Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f9f9f9;
+        }
+        .quiz-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .option {
+            margin: 10px 0;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .timer {
+            font-size: 1.2em;
+            color: darkred;
+            margin-bottom: 15px;
+        }
+    </style>
+
+    <script>
+        let seconds = 30;
+
+        function updateTimer() {
+            const timer = document.getElementById("timer");
+            if (!timer) return;
+            timer.textContent = seconds + " seconds left";
+
+            if (seconds === 0) {
+                document.getElementById("quizForm").submit();
+            } else {
+                seconds--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        window.onload = function () {
+            updateTimer();
+        };
+    </script>
+</head>
+<body>
+    <div class="quiz-box">
+        <h2>🧠 Vocabulary Test</h2>
+
+        {% if result %}
+            <div class="result {{ 'correct' if result.is_correct else 'incorrect' }}">
+                {{ feedback }}
+            </div>
+        {% endif %}
+
+        <p><strong>Score:</strong> {{ score }}</p>
+        <p class="timer" id="timer">30 seconds left</p>
+
+        <form method="POST" id="quizForm" onsubmit="clearInterval(timer);">
+            <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
+            <input type="hidden" name="word" value="{{ word }}">
+
+            <h4>What is a synonym for: <mark>{{ word }}</mark>?</h4>
+
+            {% for option in options %}
+                <div class="option">
+                    <label>
+                        <input type="radio" name="answer" value="{{ option }}" required>
+                        {{ option }}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <br>
+            <button type="submit">Submit Answer</button>
+        </form>
+
+        <hr>
+        <h4>📜 Answer History</h4>
+        {% if history %}
+            <ul>
+                {% for entry in history %}
+                    <li>
+                        <strong>{{ entry.word }}</strong>: You answered
+                        "<em>{{ entry.user_answer }}</em>" —
+                        {% if entry.is_correct %}
+                            ✅ Correct
+                        {% else %}
+                            ❌ Incorrect (Correct: <em>{{ entry.correct_answer }}</em>)
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No history yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

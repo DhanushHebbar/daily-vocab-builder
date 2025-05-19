@@ -89,3 +89,155 @@ button:hover {
     0% { opacity: 0; transform: translateY(10px); }
     100% { opacity: 1; transform: translateY(0); }
 }
+
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #222;
+            --card-bg: #ffffff;
+            --accent: #4CAF50;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #181818;
+            --text-color: #e0e0e0;
+            --card-bg: #252525;
+            --accent: #90caf9;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: url('{{ url_for("static", filename="bg-pattern.png") }}');
+            background-size: cover;
+            margin: 0;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            font-size: 2.2em;
+        }
+
+        .logo {
+            width: 45px;
+            vertical-align: middle;
+        }
+
+        .theme-toggle {
+            float: right;
+            font-size: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+        }
+
+        .dashboard, .word-section, .motivation {
+            background: var(--bg-color);
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+        }
+
+        .word-section p, .dashboard p {
+            margin: 8px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .feedback.success { color: lightgreen; }
+        .feedback.error { color: tomato; }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: var(--accent);
+        }
+
+.tts-panel {
+  margin-top: 20px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px;
+  background-color: var(--card-bg);
+  cursor: pointer;
+}
+
+.tts-panel summary {
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--accent);
+}
+
+.tts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 0;
+}
+
+.tts-buttons button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tts-buttons button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.tts-btn {
+  margin: 4px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tts-btn:hover {
+  transform: scale(1.1);
+  background-color: #45a049;
+}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}My Word History - Daily Vocabulary Builder{% endblock %}
+
+{% block content %}
+<h2>My Word History</h2>
+
+{% if word_history %}
+<table>
+    <thead>
+        <tr>
+            <th>Word</th>
+            <th>Date Learned</th>
+            <th>Usage Example</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entry in word_history %}
+        <tr>
+            <td>{{ entry.word }}</td>
+            <td>{{ entry.date_learned }}</td>
+            <td>{{ entry.example_sentence or 'N/A' }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You have not learned any words yet.</p>
+{% endif %}
+
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+{% endblock %}

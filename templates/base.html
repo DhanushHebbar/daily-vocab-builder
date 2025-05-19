@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Vocabulary Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>📚 Daily Vocabulary Builder</h1>
+        {% if current_user.is_authenticated %}
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a> |
+                <a href="{{ url_for('learn') }}">Learn</a> |
+                <a href="{{ url_for('review') }}">Review</a> |
+                <a href="{{ url_for('test') }}">Test</a> |
+                <a href="{{ url_for('games') }}">Games</a> |
+                <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        {% else %}
+            <nav>
+                <a href="{{ url_for('login') }}">Login</a> |
+                <a href="{{ url_for('register') }}">Register</a>
+            </nav>
+        {% endif %}
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flashes">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
