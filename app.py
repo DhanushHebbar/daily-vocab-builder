@@ -15,12 +15,12 @@ from utils.progress import get_progress_summary, save_sentence_history
 from utils.export import export_progress_csv, export_progress_pdf
 from utils.motivation import get_daily_motivation
 
-from flask_sqlalchemy import SQLAlchemy, SQ
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from werkzeug.security import generate_password_hash, check_password_hash
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()  # ✅ This loads your local .env file
+#load_dotenv()  # ✅ This loads your local .env file
 
 
 app = Flask(__name__)
@@ -405,19 +405,10 @@ def page_not_found(e):
 def server_error(e):
     return render_template("error.html", error="500 - Internal Server Error"), 500
 
-from .env import load_dotenv
-load_dotenv()
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
-
-#delete this later
-@app.route('/init-db')
-def init_db():
-    from app import db  # adjust if needed
-    db.create_all()
-    return "Database initialized!"
+#from .env import load_dotenv
+#load_dotenv()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
