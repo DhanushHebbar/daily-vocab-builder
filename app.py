@@ -20,8 +20,8 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')  #local fallback DB- , 'sqlite:///local.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Database setup
 db = SQLAlchemy(app)
@@ -399,6 +399,13 @@ def page_not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return render_template("error.html", error="500 - Internal Server Error"), 500
+
+#delete this later
+@app.route('/init-db')
+def init_db():
+    from app import db  # adjust if needed
+    db.create_all()
+    return "Database initialized!"
 
 if __name__ == '__main__':
     app.run(debug=True)
