@@ -15,14 +15,17 @@ from utils.progress import get_progress_summary, save_sentence_history
 from utils.export import export_progress_csv, export_progress_pdf
 from utils.motivation import get_daily_motivation
 
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, SQ
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from werkzeug.security import generate_password_hash, check_password_hash
-from .env import load_dotenv
-load_dotenv()
+from dotenv import load_dotenv
+
+load_dotenv()  # ✅ This loads your local .env file
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Database setup
