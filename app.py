@@ -402,6 +402,13 @@ def page_not_found(e):
 def server_error(e):
     return render_template("error.html", error="500 - Internal Server Error"), 500
 
+from .env import load_dotenv
+load_dotenv()
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+
 #delete this later
 @app.route('/init-db')
 def init_db():
