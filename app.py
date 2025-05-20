@@ -18,9 +18,11 @@ from utils.motivation import get_daily_motivation
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from werkzeug.security import generate_password_hash, check_password_hash
+from .env import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')  #local fallback DB- , 'sqlite:///local.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Database setup
