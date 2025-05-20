@@ -405,16 +405,6 @@ def page_not_found(e):
 def server_error(e):
     return render_template("error.html", error="500 - Internal Server Error"), 500
 
-#from .env import load_dotenv
-#load_dotenv()
-
-# Remove this after initializing!
-@app.route('/init-db')
-def init_db():
-    db.create_all()
-    return "Database initialized!"
-
-
 if __name__ == '__main__':
     #app.run(debug=True)
     port = int(os.environ.get('PORT', 10000))
